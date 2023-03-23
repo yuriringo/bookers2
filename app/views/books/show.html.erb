@@ -1,0 +1,74 @@
+<!--book投稿後＆editからbookのupdateをした場合に遷移する、bookに関する詳細ページ。右側がbook detailのページ-->
+
+<main>
+ <div>
+  <%= flash[:notice] %>
+ </div>
+
+ </br>
+
+ <div class="container">
+  <div class="row">
+   <div class="col-md-3">
+    <h2>User info</h2>
+     <%= image_tag @book.user.get_profile_image(100,100) %>
+    <table class="table">
+     <tbody>
+      <tr></tr>
+      <tr>
+       <th>name</th>
+       <th><%= @book.user.name %></th>
+      </tr>
+      <tr>
+       <th>introduction</th>
+       <th><%= @book.user.introduction %></th>
+       <th></th>
+      </tr>
+     </tbody>
+    </table>
+
+    <%= link_to edit_user_path(@book.user.id), class: "btn btn-outline-secondary btn-block" do %>
+     <i class="fas fa-user-cog"></i>
+    <% end %>
+
+    <div class="row">
+     <svg class="svg-inline--fa fa-user-cog fa-w-20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user-cog" role="img"
+     xmlns="http://www.w3.org/2000/svg" viewbox="0 0 640 512" data-fa-i2svg></svg>
+    </div>
+    <h2 class="mt-3">New book</h2>
+    <form action="/books" accept-charset="UTF-8" method="post">
+     <input type="hidden" name="authenticity_token" value="SZQfMz0MJSVUglT6vi6J_z-kVkfGi8sD8031oTK1LfYyq_EJt3hSdX3ytMXmK2p01kGfL8l7M4FsMpiv486rmQ"
+     autocomplete="off">
+     <div class="form-group">
+      <label for="book_title">Title</label>
+      <input class="form-control book_title" type="text" name="book[title]" id="book_title">
+     </div>
+     <div class="form-group">
+      <label for="book_opinion">Opinion</label>
+      <textarea class="form-control book_body" type="text" name="book[body]" id="book_body"></textarea>
+     </div>
+     <div class="form-group">
+      <input type="submit" name="commit" value="Create Book" class="btn btn-success" data-disable-with="Create Book">
+     </div>
+    </form>
+   </div>
+   <div class="col-md-8 offset-md-1">
+    <h2>Book detail</h2>
+    <table class="table">
+     <tbody>
+      <th><%= image_tag current_user.get_profile_image(100,100) %><br><%= link_to @book.user.name, user_path(@book.user_id) %></th>
+      <th> <%= link_to @book.title, book_path(@book.user_id) %></th>
+      <th><%= @book.body %></th>
+      <% if @book.user == current_user %>
+       <th><%= link_to "Edit", edit_book_path(@book.id), class: "btn btn-sm btn-success" %></th>
+       <th><%= link_to "Destroy", book_path(@book.id), method: :delete, "data-confirm" => "本当に消しますか？", class: "btn btn-sm btn-danger" %></th>
+      <% else %>
+       <th></th>
+       <th></th>
+      <% end %>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </div>
+</main>
